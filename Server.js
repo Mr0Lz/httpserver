@@ -54,6 +54,7 @@ var CONFIG,//默认配置
 		},
 		_getMIME:function (ext) {
 			/* 获取文件的MIME类型 */
+			console.log(mine[ext]);
 			return mine[ext];
 
 		},

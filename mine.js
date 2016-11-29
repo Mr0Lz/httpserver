@@ -22,5 +22,6 @@ exports.types={
 "woff2": "application/x-woff2",
 "tff": "application/x-font-truetype",
 "otf": "application/x-font-opentype",
-"eot": "application/vnd.ms-fontobject"
+"eot": "application/vnd.ms-fontobject",
+"htc" : "text/x-component"
 };

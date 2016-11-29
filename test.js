@@ -186,3 +186,69 @@ var req = httpModule.request(opt, function(httpRes) {
 //写入数据，完成发送
 req.write(contentStr);
 req.end();
+
+console.log('---------------===========-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=');
+//path.resolve相对路径, __dirname和process.argv[1]路径的问题
+//区别:path.resolve 中使用相对路径，结果是相对于<运行Node命令的工作目录.>
+//__dirname 始终指向当前js代码所在的js文件的目录.
+//process.argv[1] 指向Node.js主程序（入口js文件）的路径
+//(通过module.exports包装,后(入口js文件)主程序require引用这个模块)
+//（process.argv[0]是node本身的路径）.
+// 情景一，a.js如下内容：
+
+// a.js
+// var path = require('path');
+
+// console.log(path.resolve('.') + '(path.resolve)');
+// console.log(__dirname + '(__dirname)');
+// console.log(path.dirname(process.argv[1]) + '(process.argv[1])');
+// 假设a.js在目录E:\Mgen\Desktop\box\nd内，在目录内运行a.js，如下输出：
+
+// PS E:\Mgen\Desktop\box\nd> node a
+// E:\Mgen\Desktop\box\nd (path.resolve)
+// E:\Mgen\Desktop\box\nd (__dirname)
+// E:\Mgen\Desktop\box\nd (process.argv[1])
+// 结果都是一样的。但是，如果在另一个目录下运行a.js（此时进程的工作目录将不会是a.js的所在目录），结果如下：
+
+// PS E:\Mgen> node .\Desktop\box\nd\a.js
+// E:\Mgen (path.resolve)
+// E:\Mgen\Desktop\box\nd (__dirname)
+// E:\Mgen\Desktop\box\nd (process.argv[1])
+// 此时，直接使用相对路径（也就是代码中的path.resolve('.')）会受到进程的工作目录影响，于是输出会和其他两个不同。
+
+
+// 再看另外一个例子，把a.js的内容包在一个Module中，取名b.js，如下代码：
+
+// exports.test = function() {
+//     var path = require('path');
+
+//     console.log(path.resolve('.') + '(path.resolve)');
+//     console.log(__dirname + '(__dirname)');
+//     console.log(path.dirname(process.argv[1]) + '(process.argb[1])');
+// }
+// 代码基本上和上面的一样，只不过把逻辑包在了函数里，然后通过module.exports导出这个函数，
+// 接着把b.js放入另一个目录里，然后使用a.js去require这个Module，目录结构是这样：
+
+// -- a.js
+// -- modules
+// ---- b.js
+// 用a.js包含b.js，然后运行test函数，所以a.js内容如下：
+
+// var b = require('./modules/b.js');
+// b.test();
+// 在a.js的目录下直接运行a.js，输出：
+
+// PS E:\Mgen\Desktop\box\nd> node a
+// E:\Mgen\Desktop\box\nd (path.resolve)
+// E:\Mgen\Desktop\box\nd\modules (__dirname)
+// E:\Mgen\Desktop\box\nd (process.argv[1])
+// 可以看到，__dirname指向它所在的文件目录（b.js），而process.argv则继续指向a.js，
+// 所以他和其他两个路径不同。
+
+// 最后，在另一目录下再执行a.js，输出如下：
+
+// PS E:\Mgen> node .\Desktop\box\nd\a.js
+// E:\Mgen (path.resolve)
+// E:\Mgen\Desktop\box\nd\modules (__dirname)
+// E:\Mgen\Desktop\box\nd (process.argb[1])
+// 三个目录都不一样。
