@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>t</title>
+	<style type="text/css">
+		.d{
+			/*width: 600px;*/
+			max-width: 600px;
+  			margin: 0 auto;
+		}
+
+
+		.simple {
+  max-width: 500px;
+  /*width: 500px;*/
+  margin: 20px auto;
+    border: solid blue 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.fancy {
+  max-width: 500px;
+  /*width: 500px;*/
+  margin: 20px auto;
+  padding: 50px;
+  border: solid blue 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+	</style>
+</head>
+<body>
+	<div class="d">
+		设置块级元素的 width 可以阻止它从左到右撑满容器。然后你就可以设置左右外边距为 auto 来使其水平居中。元素会占据你所指定的宽度，然后剩余的宽度会一分为二成为左右外边距。
+
+唯一的问题是，当浏览器窗口比元素的宽度还要窄时，浏览器会显示一个水平滚动条来容纳页面。让我们再来改进下这个方案...
+	</div>
+		<div class="simple">
+		设置块级元素的 width 可以阻止它从左到右撑满容器。然后你就可以设置左右外边距为 auto 来使其水平居中。元素会占据你所指定的宽度，然后剩余的宽度会一分为二成为左右外边距。
+
+唯一的问题是，当浏览器窗口比元素的宽度还要窄时，浏览器会显示一个水平滚动条来容纳页面。让我们再来改进下这个方案...
+	</div>
+		<div class="fancy">
+		设置块级元素的 width 可以阻止它从左到右撑满容器。然后你就可以设置左右外边距为 auto 来使其水平居中。元素会占据你所指定的宽度，然后剩余的宽度会一分为二成为左右外边距。
+
+唯一的问题是，当浏览器窗口比元素的宽度还要窄时，浏览器会显示一个水平滚动条来容纳页面。让我们再来改进下这个方案...
+	</div>
+</body>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="observationMode.js"></script>
+<script type="text/javascript">
+function fn1( value ) {
+    console.log( value );
+}
+ 
+function fn2( value ) {
+    fn1("fn2 says: " + value);
+    return false;
+}
+//var callbacks = $.Callbacks("once");
+// var callbacks= $.Callbacks("memory");
+// var callbacks= $.Callbacks();
+var callbacks= $.Callbacks("unique");
+callbacks.add( fn1 );
+ 
+// outputs: foo!
+callbacks.fire( "foo!" );
+ 
+callbacks.add( fn2 );
+callbacks.add( fn2 );
+callbacks.add( fn2 );
+// outputs: bar!, fn2 says: bar!
+callbacks.fire( "bar!" );
+ 
+callbacks.remove( fn2 );
+ 
+// only outputs foobar, as fn2 has been removed.
+callbacks.fire( "foobar" );
+</script>
+</html>
