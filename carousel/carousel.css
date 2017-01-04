@@ -1,0 +1,130 @@
+/*统一样式*/
+*{padding: 0;margin:0;outline:none;
+	text-decoration: none;
+	list-style: none;border: 0;}
+body{
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif
+}
+
+/* 轮播框内样式 */
+#banner{
+    position: relative;
+    width: 100%;
+    height: 380px;
+    /*min-width: 1024px;*/
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+#banner .banner_img{
+	position: absolute;
+	height:100%;
+	display: block;
+}
+
+#banner .banner_img a img{
+	float: left;
+	width: 100%;height: 100%;
+}
+
+
+.btn{
+	position: relative;
+	width: 1024px;
+	margin: 0 auto;
+	top: 50%;
+}
+
+.prev,.next{
+position: absolute;
+margin-top: -50px;
+width: 34px\9;
+height: 100px;
+top: 50%;
+display: block\9;
+	-moz-transition: all 0.3s;
+	-ms-transition: all 0.3s;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+	background-repeat: no-repeat;-o-transition: all 0.3s;
+	background-position: center;width: 32px;
+		-o-transform:scale(0);
+	-moz-transform:scale(0);
+	-webkit-transform:scale(0);
+	-ms-transform:scale(0);
+	transform:scale(0); 
+
+}
+
+.prev{
+	left: -60%;
+	left: -50%\9;
+	margin-left:512px; 
+	background-image: url(prev.png);
+	-o-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-ms-transition: all 0.3s;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+
+}
+
+.next{
+	right: -60%;
+	right: -50%\9;
+	margin-right:512px; 
+	background-image: url(next.png);
+	-o-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-ms-transition: all 0.3s;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+#banner:hover .prev{
+	left:-50%;
+	-o-transform:scale(1);
+	-moz-transform:scale(1);
+	-webkit-transform:scale(1);
+	-ms-transform:scale(1);
+	transform:scale(1);
+}
+#banner:hover .next{
+	right:-50%;
+		-o-transform:scale(1);
+	-moz-transform:scale(1);
+	-webkit-transform:scale(1);
+	-ms-transform:scale(1);
+	transform:scale(1);
+}
+
+#banner .next:hover,#banner .prev:hover{
+	-o-transform:scale(1.2);
+	-moz-transform:scale(1.2);
+	-webkit-transform:scale(1.2);
+	-ms-transform:scale(1.2);
+	transform:scale(1.2);
+}
+
+#banner  ul{
+	position: absolute;
+	bottom:4px;
+	text-align: center;
+	width: 100%;
+}
+#banner  ul li{
+	display:inline-block;
+	background-color: #2773af;
+	width: 14px;
+	height: 14px;
+	margin: 0 2px;
+	border-radius: 7px;
+	cursor: pointer;
+}
+#banner  ul li:hover{
+	background-color: #88b209;
+}
+
+#banner  ul li.actClass{
+	background-color: #666;
+}
