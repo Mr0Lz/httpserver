@@ -62,8 +62,7 @@ var CONFIG,//默认配置
 			var self=this;
 			//注意：自Node V4.0以后这个方法已经不再支持，请使用fs.stat()或fs.access()。
 			//fs.exists(pathname, function (exists) {});
-
-
+			
 			fs.stat(pathName,function (err,stats) { 
 				if (err) {
 					res.writeHead(404,"Not Found",{"Content-type":"text/plai"});
@@ -108,6 +107,7 @@ var CONFIG,//默认配置
 								//console.log(req.url+"--3--"+pathName);
 								pathName.slice(-1) === '/' && (pathName=path.normalize(pathName+"/"+CONFIG.home));
 								params=url.parse(req.url,true).query;
+								console.log(1);
 								self.responseFile.bind(self)(pathName,res, ext, params);
 							}else if(method==="POST") {
 							//	console.log(req.url+"--4--"+pathName);
@@ -117,10 +117,12 @@ var CONFIG,//默认配置
 								}).on("end",function () {
 									//querystring模块处理查询字符串的工具
 									params=reqiure("querystring").parse(_postData);
+									console.log(2);
 									self.responseFile.bind(self)(pathName,res, ext, params);
 								});
 							}else{
 							//	console.log(req.url+"--5--"+pathName);
+								console.log(3);
 								self.responseFile.bind(self)(pathName,res, ext, params);
 							}
 
@@ -139,15 +141,42 @@ var CONFIG,//默认配置
 			
 			var self=this;
 			var raw=fs.createReadStream(pathName);
+			var  data="";
 			//setHeader 允许跨域调用
 			res.setHeader("Access-Control-Allow-Origin","*");
 			res.setHeader("Content-type",self._getMIME(ext));
+			debugger;				
+			console.log(raw);
 			//判断是否有json,是否需要delay延迟
-			if (ext==="json"&&params.delay) {
-				setTimeout(function () {
-					res.writeHead(200,"OK");
-					raw.pipe(res);
-				},params.delay);
+			if (ext==="json") {
+				if (params.delay) {
+							setTimeout(function () {
+								res.writeHead(200,"OK");
+								raw.pipe(res);
+							},params.delay);
+				}else {
+
+					raw.on("data",function (chunk) {
+						data+=chunk;
+
+					});
+
+						raw.on("end",function () {
+								data=JSON.parse(data);
+								//raw.pipe(res);
+									setTimeout(function () {
+										res.writeHead(200,"OK");
+										/*res.write(JSON.stringify(data));
+										res.end();*/
+										raw.pipe(res);
+									},data.delay);
+							
+
+						});
+				}
+
+
+
 			}else{
 				res.writeHead(200,"OK");
 				raw.pipe(res);

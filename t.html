@@ -58,7 +58,8 @@ function fn1( value ) {
 }
  
 function fn2( value ) {
-    fn1("fn2 says: " + value);
+    //fn1("fn2 says: " + value);
+    console.log("fn2: " +value);
     return false;
 }
 //var callbacks = $.Callbacks("once");
@@ -66,19 +67,46 @@ function fn2( value ) {
 // var callbacks= $.Callbacks();
 var callbacks= $.Callbacks("unique");
 callbacks.add( fn1 );
- 
 // outputs: foo!
 callbacks.fire( "foo!" );
  
 callbacks.add( fn2 );
-callbacks.add( fn2 );
-callbacks.add( fn2 );
 // outputs: bar!, fn2 says: bar!
 callbacks.fire( "bar!" );
- 
-callbacks.remove( fn2 );
+
+
+//callbacks.remove( fn2 );
  
 // only outputs foobar, as fn2 has been removed.
-callbacks.fire( "foobar" );
+//callbacks.fire( "foobar" );
+
+
+var topics = {};
+ 
+jQuery.Topic = function( id ) {
+    var callbacks,
+        method,
+        topic = id && topics[ id ];//第一个为true 返回后面的
+    if ( !topic ) {
+        callbacks = jQuery.Callbacks();
+        topic = {
+            publish: callbacks.fire,
+            subscribe: callbacks.add,
+            unsubscribe: callbacks.remove
+        };
+        if ( id ) {
+            topics[ id ] = topic;
+        }
+    }
+    return topic;
+};
+
+$.Topic( "mailArrived" ).subscribe( fn1 );
+$.Topic( "mailArrived" ).subscribe( fn2 );
+$.Topic( "mailSent" ).subscribe( fn1 );
+ 
+// Publisher
+$.Topic( "mailArrived" ).publish( "苍井空" );
+$.Topic( "mailSent" ).publish( "冲田杏梨" );
 </script>
 </html>
