@@ -144,9 +144,7 @@ var CONFIG,//默认配置
 			var  data="";
 			//setHeader 允许跨域调用
 			res.setHeader("Access-Control-Allow-Origin","*");
-			res.setHeader("Content-type",self._getMIME(ext));
-			debugger;				
-			console.log(raw);
+			res.setHeader("Content-type",self._getMIME(ext));			
 			//判断是否有json,是否需要delay延迟
 			if (ext==="json") {
 				if (params.delay) {
