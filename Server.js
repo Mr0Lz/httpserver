@@ -116,7 +116,7 @@ var CONFIG,//默认配置
 									_postData+=chunk;//接收post 参数
 								}).on("end",function () {
 									//querystring模块处理查询字符串的工具
-									params=reqiure("querystring").parse(_postData);
+									params=require("querystring").parse(_postData);
 									console.log(2);
 									self.responseFile.bind(self)(pathName,res, ext, params);
 								});
