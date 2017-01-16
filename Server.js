@@ -7,12 +7,13 @@ var url=require('url');//用于解析get请求所带的参数
 var mine=require('./mine').types;
 var CONFIG,//默认配置
 	HTTP,//HTTP静态码
-	log;//日志打印
+	log,//日志打印
+	ip="";
 
 	CONFIG={
 		homedir:"",
 		home:"index.html",
-		port:3000,
+		port:4273,
 		browser:true,
 	};
 
@@ -31,7 +32,6 @@ var CONFIG,//默认配置
 			//通过内置的OS模块中的networkInterfaces()方法获取本机的网络接口信息集合，
 			//从中可以得到IPv4的地址
 			var ifaces=os.networkInterfaces();
-			var ip="";
 			for(var dev in ifaces){
 				ifaces[dev].forEach(function (details) {
 					if (ip===""&&details.family==="IPv4"&&!details.internal) {
@@ -142,8 +142,8 @@ var CONFIG,//默认配置
 			var self=this;
 			var raw=fs.createReadStream(pathName);
 			var  data="";
-			//setHeader 允许跨域调用
-			res.setHeader("Access-Control-Allow-Origin","*");
+			res.setHeader("Access-Control-Allow-Credentials","true");//跨域脚本提交指定Cooike信息,没有这个头响应就会忽略
+			res.setHeader("Access-Control-Allow-Origin","*");//setHeader 允许
 			res.setHeader("Content-type",self._getMIME(ext));			
 			//判断是否有json,是否需要delay延迟
 			if (ext==="json") {
@@ -213,4 +213,3 @@ var CONFIG,//默认配置
 		}
 	};
 HTTP.init();
-
